@@ -9,7 +9,7 @@ function cell(x, y) {
 
 cell.prototype.show = function () {
 	if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) {
-			console.log("Mobile");
+		console.log("Mobile");
 	}
 	if (this.revealed) {
 		fill(127);
@@ -20,8 +20,9 @@ cell.prototype.show = function () {
 		} else {
 			if (this.neighbourCount > 0) {
 				fill(255);
-				textSize(35);
-				text(this.neighbourCount, this.x * this.w + 18, this.y * this.w + 40);
+				textSize(this.w);
+				textAlign(CENTER, CENTER);
+				text(this.neighbourCount, this.x * this.w + this.w * 0.5, this.y * this.w + this.w * 0.5);
 			}
 		}
 	} else {
@@ -58,7 +59,7 @@ cell.prototype.reveal = function () {
 	this.revealed = true;
 	if (this.neighbourCount == 0) {
 		this.revealNeighbours();
-	}else if(this.mine) {
+	} else if (this.mine) {
 		this.revealAll();
 		noLoop();
 	}

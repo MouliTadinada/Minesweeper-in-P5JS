@@ -12,10 +12,10 @@ function setup() {
 		} else {
 			createCanvas(windowHeight, windowHeight);
 		}
-		cell_size = 200;
+		cell_size = floor(width/10);
 	} else {
 		createCanvas(601, 601);
-		cell_size = 100;
+		cell_size = floor(width/10);
 	}
 	cols = floor(width / cell_size);
 	rows = floor(height / cell_size);
