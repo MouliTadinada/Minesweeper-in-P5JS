@@ -5,37 +5,42 @@ var score = 0;
 var gameOver = false;
 
 function setup() {
-	createCanvas(601, 601);
-	cols = floor(width/cell_size);
-	rows = floor(height/cell_size);
+	
+	if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) {
+		createCanvas(windowWidth, windowHeight);
+	} else {
+		createCanvas(601, 601);
+	}
+	cols = floor(width / cell_size);
+	rows = floor(height / cell_size);
 	grid = make2DArray(cols, rows);
-	for(var i=0; i<cols; i++) {
-		for(var j=0; j<rows; j++) {
+	for (var i = 0; i < cols; i++) {
+		for (var j = 0; j < rows; j++) {
 			grid[i][j] = new cell(i, j);
 		}
 	}
-	for(i=0; i<total_mines; i++) {
+	for (i = 0; i < total_mines; i++) {
 		var x = floor(random(cols));
 		var y = floor(random(rows));
-		if(grid[x][y].mine) {
+		if (grid[x][y].mine) {
 			i--;
-		}else {
+		} else {
 			grid[x][y].mine = true;
 		}
 	}
-	for(var i=0; i<cols; i++) {
-		for(var j=0; j<rows; j++) {
+	for (var i = 0; i < cols; i++) {
+		for (var j = 0; j < rows; j++) {
 			grid[i][j].setNeighbourCount();
 		}
 	}
- }
+}
 
 function mousePressed() {
-	for(var i=0; i<cols; i++) {
-		for(var j=0; j<rows; j++) {
-			if(grid[i][j].contains(mouseX, mouseY)) {
+	for (var i = 0; i < cols; i++) {
+		for (var j = 0; j < rows; j++) {
+			if (grid[i][j].contains(mouseX, mouseY)) {
 				grid[i][j].reveal();
-				if(grid[i][j].mine) {
+				if (grid[i][j].mine) {
 					gameOver = true;
 				}
 				return;
@@ -46,9 +51,9 @@ function mousePressed() {
 
 function checkScore() {
 	var revealedCells = 0;
-	for(var i=0; i<cols; i++) {
-		for(var j=0; j<rows; j++) {
-			if(grid[i][j].revealed) {
+	for (var i = 0; i < cols; i++) {
+		for (var j = 0; j < rows; j++) {
+			if (grid[i][j].revealed) {
 				revealedCells++;
 			}
 		}
@@ -58,7 +63,7 @@ function checkScore() {
 
 function make2DArray(cols, rows) {
 	var arr = new Array(cols);
-	for(var i=0; i<arr.length; i++) {
+	for (var i = 0; i < arr.length; i++) {
 		arr[i] = new Array(rows);
 	}
 	return arr;
@@ -66,13 +71,13 @@ function make2DArray(cols, rows) {
 
 function draw() {
 	background(0);
-	if(!gameOver) {
+	if (!gameOver) {
 		score = checkScore();
-	}else {
+	} else {
 		createElement("h1", "SCORE: " + score);
 	}
-	for(var i=0; i<cols; i++) {
-		for(var j=0; j<rows; j++) {
+	for (var i = 0; i < cols; i++) {
+		for (var j = 0; j < rows; j++) {
 			grid[i][j].show();
 		}
 	}

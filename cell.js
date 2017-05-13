@@ -8,6 +8,9 @@ function cell(x, y) {
 }
 
 cell.prototype.show = function () {
+	if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) {
+			console.log("Mobile");
+	}
 	if (this.revealed) {
 		fill(127);
 		rect(this.x * this.w, this.y * this.w, this.w, this.w);
