@@ -1,15 +1,21 @@
-var cols, rows, cell_size = 60;
-var total_mines = 20;
+var cols, rows, cell_size;
+var total_mines = 15;
 var grid;
 var score = 0;
 var gameOver = false;
 
 function setup() {
-	
+
 	if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) {
-		createCanvas(windowWidth, windowHeight);
+		if (windowWidth < windowHeight) {
+			createCanvas(windowWidth, windowWidth);
+		} else {
+			createCanvas(windowHeight, windowHeight);
+		}
+		cell_size = 200;
 	} else {
 		createCanvas(601, 601);
+		cell_size = 100;
 	}
 	cols = floor(width / cell_size);
 	rows = floor(height / cell_size);
