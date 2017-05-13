@@ -6,7 +6,7 @@ var gameOver = false;
 var h1;
 
 function setup() {
-	h1 = createElement("h1","WELCOME");
+	h1 = createElement("h1", "WELCOME");
 	if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) {
 		if (windowWidth < windowHeight) {
 			createCanvas(windowWidth, windowWidth);
@@ -81,8 +81,14 @@ function make2DArray(cols, rows) {
 function gameWon() {
 	for (var i = 0; i < cols; i++) {
 		for (var j = 0; j < rows; j++) {
-			if(!this.revealed && !this.mine) {
-				return false;
+			if (!grid[i][j].mine) {
+				if (!grid[i][j].revealed) {
+					return false;
+				}
+			} else {
+				if (grid[i][j].revealed) {
+					return false;
+				}
 			}
 		}
 	}
@@ -93,9 +99,9 @@ function gameWon() {
 function draw() {
 	background(0);
 	if (!gameOver) {
-		if(gameWon()) {
+		if (gameWon()) {
 			h1.html("GAME WON");
-		}else {
+		} else {
 			score = checkScore();
 		}
 	} else {
