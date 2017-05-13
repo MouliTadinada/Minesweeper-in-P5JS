@@ -1,6 +1,8 @@
 var cols, rows, cell_size = 60;
-var total_mines = 10;
+var total_mines = 20;
 var grid;
+var score = 0;
+var gameOver = false;
 
 function setup() {
 	createCanvas(601, 601);
@@ -23,7 +25,7 @@ function setup() {
 	}
 	for(var i=0; i<cols; i++) {
 		for(var j=0; j<rows; j++) {
-			grid[i][j].setNeighbourCount(i, j);
+			grid[i][j].setNeighbourCount();
 		}
 	}
  }
@@ -33,10 +35,25 @@ function mousePressed() {
 		for(var j=0; j<rows; j++) {
 			if(grid[i][j].contains(mouseX, mouseY)) {
 				grid[i][j].reveal();
+				if(grid[i][j].mine) {
+					gameOver = true;
+				}
 				return;
 			}
 		}
 	}
+}
+
+function checkScore() {
+	var revealedCells = 0;
+	for(var i=0; i<cols; i++) {
+		for(var j=0; j<rows; j++) {
+			if(grid[i][j].revealed) {
+				revealedCells++;
+			}
+		}
+	}
+	return revealedCells;
 }
 
 function make2DArray(cols, rows) {
@@ -49,6 +66,11 @@ function make2DArray(cols, rows) {
 
 function draw() {
 	background(0);
+	if(!gameOver) {
+		score = checkScore();
+	}else {
+		createElement("h1", "SCORE: " + score);
+	}
 	for(var i=0; i<cols; i++) {
 		for(var j=0; j<rows; j++) {
 			grid[i][j].show();

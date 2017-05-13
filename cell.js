@@ -15,8 +15,11 @@ cell.prototype.show = function () {
 			fill(255, 0, 0);
 			ellipse(this.x * this.w + this.w * 0.5, this.y * this.w + this.w * 0.5, this.w * 0.5);
 		} else {
-			fill(255);
-			text(this.neighbourCount, this.x * this.w, this.y * this.w);
+			if (this.neighbourCount > 0) {
+				fill(255);
+				textSize(35);
+				text(this.neighbourCount, this.x * this.w + 18, this.y * this.w + 40);
+			}
 		}
 	} else {
 		fill(51);
@@ -28,20 +31,46 @@ cell.prototype.contains = function (x, y) {
 	return (x >= this.x * this.w && x <= this.x * this.w + this.w && y >= this.y * this.w && y <= this.y * this.w + this.w);
 }
 
-cell.prototype.reveal = function () {
-	this.revealed = true;
+cell.prototype.revealAll = function () {
+	for (var i = 0; i < cols; i++) {
+		for (var j = 0; j < rows; j++) {
+			grid[i][j].revealed = true;
+		}
+	}
 }
 
-cell.prototype.setNeighbourCount = function (i, j) {
+cell.prototype.revealNeighbours = function () {
+	for (var i = this.x - 1; i <= this.x + 1; i++) {
+		for (var j = this.y - 1; j <= this.y + 1; j++) {
+			if (i > -1 && i < cols && j > -1 && j < rows) {
+				if (!grid[i][j].mine && !grid[i][j].revealed) {
+					grid[i][j].reveal();
+				}
+			}
+		}
+	}
+}
+
+cell.prototype.reveal = function () {
+	this.revealed = true;
+	if (this.neighbourCount == 0) {
+		this.revealNeighbours();
+	}else if(this.mine) {
+		this.revealAll();
+		noLoop();
+	}
+}
+
+cell.prototype.setNeighbourCount = function () {
 	if (this.mine) {
 		this.neighbourCount = -1;
 		return;
 	}
 	var totalMines = 0;
-	for (var x = i - 1; x <= i + 1; x++) {
-		for (var y = j - 1; y <= j + 1; j++) {
-			if (x > -1 && x < cols && y > -1 && y < rows) {
-				if (grid[x][y].mine) {
+	for (var i = this.x - 1; i <= this.x + 1; i++) {
+		for (var j = this.y - 1; j <= this.y + 1; j++) {
+			if (i > -1 && i < cols && j > -1 && j < rows) {
+				if (grid[i][j].mine) {
 					totalMines++;
 				}
 			}
