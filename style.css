@@ -1,0 +1,11 @@
+h1 {
+	color: aqua; 
+	text-decoration-color: aliceblue;
+	text-align: center;
+	text-decoration-line: overline;
+}
+
+body {
+	background-color: black;
+	text-align: center;
+}

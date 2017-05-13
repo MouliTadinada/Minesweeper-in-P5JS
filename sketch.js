@@ -4,6 +4,7 @@ var grid;
 var score = 0;
 var gameOver = false;
 var h1;
+var difficulty = 0.1;
 
 function setup() {
 	h1 = createElement("h1", "WELCOME");
@@ -21,7 +22,7 @@ function setup() {
 	cols = floor(width / cell_size);
 	rows = floor(height / cell_size);
 
-	total_mines = floor(rows * cols * 0.1);
+	total_mines = floor(rows * cols * difficulty);
 	grid = make2DArray(cols, rows);
 	for (var i = 0; i < cols; i++) {
 		for (var j = 0; j < rows; j++) {
@@ -79,37 +80,26 @@ function make2DArray(cols, rows) {
 }
 
 function gameWon() {
-	for (var i = 0; i < cols; i++) {
-		for (var j = 0; j < rows; j++) {
-			if (!grid[i][j].mine) {
-				if (!grid[i][j].revealed) {
-					return false;
-				}
-			} else {
-				if (grid[i][j].revealed) {
-					return false;
-				}
-			}
-		}
-	}
-	return true;
+	return (total_mines + score == rows * cols);
+
 }
 
 
 function draw() {
 	background(0);
-	if (!gameOver) {
-		if (gameWon()) {
-			h1.html("GAME WON");
-		} else {
-			score = checkScore();
-		}
-	} else {
-		h1.html("GAME OVER!  SCORE: " + score);
-	}
 	for (var i = 0; i < cols; i++) {
 		for (var j = 0; j < rows; j++) {
 			grid[i][j].show();
 		}
+	}
+	if (!gameOver) {
+		score = checkScore();
+		if (gameWon()) {
+			h1.html("GAME WON! REFRESH TO PLAY A NEW GAME !");
+			noLoop();
+		}
+	} else {
+		h1.html("GAME OVER!  SCORE: " + score + "!  REFRESH TO PLAY A NEW GAME !") ;
+		noLoop();
 	}
 }
