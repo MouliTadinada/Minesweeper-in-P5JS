@@ -1,24 +1,27 @@
 var cols, rows, cell_size;
-var total_mines = 15;
+var total_mines;
 var grid;
 var score = 0;
 var gameOver = false;
+var h1;
 
 function setup() {
-
+	h1 = createElement("h1","WELCOME");
 	if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) {
 		if (windowWidth < windowHeight) {
 			createCanvas(windowWidth, windowWidth);
 		} else {
 			createCanvas(windowHeight, windowHeight);
 		}
-		cell_size = floor(width/10);
+		cell_size = floor(width / 10);
 	} else {
 		createCanvas(601, 601);
-		cell_size = floor(width/10);
+		cell_size = floor(width / 10);
 	}
 	cols = floor(width / cell_size);
 	rows = floor(height / cell_size);
+
+	total_mines = floor(rows * cols * 0.1);
 	grid = make2DArray(cols, rows);
 	for (var i = 0; i < cols; i++) {
 		for (var j = 0; j < rows; j++) {
@@ -75,12 +78,28 @@ function make2DArray(cols, rows) {
 	return arr;
 }
 
+function gameWon() {
+	for (var i = 0; i < cols; i++) {
+		for (var j = 0; j < rows; j++) {
+			if(!this.revealed && !this.mine) {
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
+
 function draw() {
 	background(0);
 	if (!gameOver) {
-		score = checkScore();
+		if(gameWon()) {
+			h1.html("GAME WON");
+		}else {
+			score = checkScore();
+		}
 	} else {
-		createElement("h1", "SCORE: " + score);
+		h1.html("GAME OVER!  SCORE: " + score);
 	}
 	for (var i = 0; i < cols; i++) {
 		for (var j = 0; j < rows; j++) {

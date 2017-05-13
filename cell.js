@@ -82,3 +82,14 @@ cell.prototype.setNeighbourCount = function () {
 	}
 	this.neighbourCount = totalMines;
 }
+
+cell.prototype.gameWon = function () {
+	for (var i = 0; i < cols; i++) {
+		for (var j = 0; j < rows; j++) {
+			if(this.revealed && this.mine) {
+				return false;
+			}
+		}
+	}
+	return true;
+}
