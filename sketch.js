@@ -5,6 +5,7 @@ var score = 0;
 var gameOver = false;
 var h1;
 var difficulty = 0.1;
+var flag = false;
 
 function setup() {
 	h1 = createElement("h1", "WELCOME");
@@ -45,15 +46,28 @@ function setup() {
 	}
 }
 
+function keyPressed() {
+	if (keyCode == ENTER) {
+		flag = true;
+	}
+}
+
 function mousePressed() {
 	for (var i = 0; i < cols; i++) {
 		for (var j = 0; j < rows; j++) {
 			if (grid[i][j].contains(mouseX, mouseY)) {
-				grid[i][j].reveal();
-				if (grid[i][j].mine) {
-					gameOver = true;
+				if (!flag) {
+					grid[i][j].reveal();
+					if (grid[i][j].mine) {
+						gameOver = true;
+					}
+					return;
+				} else {
+					if (!grid[i][j].revealed) {
+						grid[i][j].mark();
+						flag = false;
+					}
 				}
-				return;
 			}
 		}
 	}
@@ -86,7 +100,7 @@ function gameWon() {
 
 
 function draw() {
-	background(0);
+	background(51);
 	for (var i = 0; i < cols; i++) {
 		for (var j = 0; j < rows; j++) {
 			grid[i][j].show();
@@ -94,12 +108,15 @@ function draw() {
 	}
 	if (!gameOver) {
 		score = checkScore();
+		if (score > 0) {
+			h1.html("PRESS ENTER TO MARK/UNMARK A CELL");
+		}
 		if (gameWon()) {
 			h1.html("GAME WON! REFRESH TO PLAY A NEW GAME !");
 			noLoop();
 		}
 	} else {
-		h1.html("GAME OVER!  SCORE: " + score + "!  REFRESH TO PLAY A NEW GAME !") ;
+		h1.html("GAME OVER!  SCORE: " + score + "!  REFRESH TO PLAY A NEW GAME !");
 		noLoop();
 	}
 }

@@ -5,6 +5,7 @@ function cell(x, y) {
 	this.mine = false;
 	this.revealed = false;
 	this.neighbourCount = 0;
+	this.flag = false;
 }
 
 cell.prototype.show = function () {
@@ -27,6 +28,9 @@ cell.prototype.show = function () {
 		}
 	} else {
 		fill(51);
+		if (this.flag) {
+			fill(127, 50, 120);
+		}
 		rect(this.x * this.w, this.y * this.w, this.w, this.w);
 	}
 }
@@ -81,4 +85,8 @@ cell.prototype.setNeighbourCount = function () {
 		}
 	}
 	this.neighbourCount = totalMines;
+}
+
+cell.prototype.mark = function () {
+	this.flag = !this.flag;
 }
