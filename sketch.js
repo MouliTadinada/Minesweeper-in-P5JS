@@ -4,7 +4,7 @@ var grid;
 var score = 0;
 var gameOver = false;
 var h1;
-var difficulty = 0.1;
+var difficulty = 0.11;
 var flag = false;
 
 function setup() {
@@ -15,10 +15,10 @@ function setup() {
 		} else {
 			createCanvas(windowHeight, windowHeight);
 		}
-		cell_size = floor(width / 10);
+		cell_size = floor(width / 15);
 	} else {
 		createCanvas(601, 601);
-		cell_size = floor(width / 10);
+		cell_size = floor(width / 15);
 	}
 	cols = floor(width / cell_size);
 	rows = floor(height / cell_size);
@@ -95,7 +95,6 @@ function make2DArray(cols, rows) {
 
 function gameWon() {
 	return (total_mines + score == rows * cols);
-
 }
 
 
